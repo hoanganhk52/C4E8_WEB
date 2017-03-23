@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return redirect(url_for("login"))
+    return redirect(url_for("foodblog"))
 
 girl_list = [
     {
@@ -41,6 +41,61 @@ my_contact = {
     "Education": "Bach Khoa University"
 }
 
+foodlist=[
+[
+{
+    "src" : "../static/images/food1.png",
+    "alt" : "Sandwich",
+    "title" : "The Perfect Sandwich, A Real NYC Classic",
+    "information" : "Just some random text, lorem ipsum text praesent tincidunt ipsum lipsum."
+    },
+{
+    "src" : "../static/images/food2.png",
+    "alt" : "Steak",
+    "title" : "Let Me Tell You About This Steak",
+    "information" : "Once again, some random text to lorem lorem lorem lorem ipsum text praesent tincidunt ipsum lipsum."
+    },
+{
+    "src" : "../static/images/food3.png",
+    "alt" : "Cherries",
+    "title" : "Cherries, interrupted",
+    "information" : "Lorem ipsum text praesent tincidunt ipsum lipsum."
+    },
+{
+    "src" : "../static/images/food4.png",
+    "alt" : "Pasta and Wine",
+    "title" : "Once Again, Robust Wine and Vegetable Pasta",
+    "information" : "Lorem ipsum text praesent tincidunt ipsum lipsum."
+    }
+],
+[
+{
+    "src" : "../static/images/food5.png",
+    "alt" : "Popsicle",
+    "title" : "All I Need Is a Popsicle",
+    "information" : "Just some random text, lorem ipsum text praesent tincidunt ipsum lipsum."
+    },
+{
+    "src" : "../static/images/food6.png",
+    "alt" : "Salmon",
+    "title" : "Salmon For Your Skin",
+    "information" : "Once again, some random text to lorem lorem lorem lorem ipsum text praesent tincidunt ipsum lipsum."
+    },
+{
+    "src" : "../static/images/food7.png",
+    "alt" : "Sandwich",
+    "title" : "The Perfect Sandwich, A Real Classic",
+    "information" : "Just some random text, lorem ipsum text praesent tincidunt ipsum lipsum."
+    },
+{
+    "src" : "../static/images/food8.png",
+    "alt" : "Croissant",
+    "title" : "Le French",
+    "information" : "Lorem lorem lorem lorem ipsum text praesent tincidunt ipsum lipsum."
+    }
+]
+]
+
 
 
 number_of_visitor = 0
@@ -60,6 +115,17 @@ def login():
 def food():
     return render_template("food.html", list_girl=girl_list)
 
+@app.route('/cssdemo')
+def cssdemo():
+    return render_template("cssdemo.html")
+
+@app.route('/w3cssdemo')
+def w3cssdemo():
+    return render_template("w3cssdemo.html")
+
+@app.route('/foodblog')
+def foodblog():
+    return render_template("foodblog.html", foodlist=foodlist)
 
 
 
