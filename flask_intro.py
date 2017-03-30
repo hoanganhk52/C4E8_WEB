@@ -1,6 +1,14 @@
 from flask import *
 from datetime import *
+import mlab
+from model.fooditem import FoodItem
 app = Flask(__name__)
+
+#connect to mlab database
+mlab.connect()
+
+#creat a new FoodItem and save it to database
+
 
 
 @app.route('/')
@@ -30,6 +38,8 @@ girl_list = [
     }
 ]
 
+
+
 my_contact = {
     "Avatar": "https://scontent.fhan2-1.fna.fbcdn.net/v/t1.0-9/1655910_258291991014902_2123799782_n.jpg?oh=d4ff603db8ca1b9ce9f5e3f00e549cfe&oe=596903F7",
     "Fullname": "Pham Hoang Anh",
@@ -42,7 +52,7 @@ my_contact = {
 }
 
 foodlist=[
-[
+
 {
     "src" : "../static/images/food1.png",
     "alt" : "Sandwich",
@@ -67,8 +77,8 @@ foodlist=[
     "title" : "Once Again, Robust Wine and Vegetable Pasta",
     "information" : "Lorem ipsum text praesent tincidunt ipsum lipsum."
     }
-],
-[
+,
+
 {
     "src" : "../static/images/food5.png",
     "alt" : "Popsicle",
@@ -93,8 +103,15 @@ foodlist=[
     "title" : "Le French",
     "information" : "Lorem lorem lorem lorem ipsum text praesent tincidunt ipsum lipsum."
     }
+
 ]
-]
+
+# for image in foodlist:
+#     new_food = FoodItem()
+#     new_food.src = image["src"]
+#     new_food.title = image["alt"]
+#     new_food.description = image["title"]
+#     new_food.save()
 
 
 
@@ -109,7 +126,7 @@ def login():
     global number_of_visitor
     number_of_visitor += 1
     current_time_on_server = str(datetime.now())
-    return render_template("login.html",current_time_on_server=current_time_on_server, number_of_visitor=number_of_visitor*1000)
+    return render_template("login.html", current_time_on_server=current_time_on_server, number_of_visitor=number_of_visitor * 1000)
 
 @app.route('/food')
 def food():
@@ -125,7 +142,45 @@ def w3cssdemo():
 
 @app.route('/foodblog')
 def foodblog():
-    return render_template("foodblog.html", foodlist=foodlist)
+    return render_template("foodblog.html", foodlist=FoodItem.objects())
+
+@app.route('/addfood', methods=["GET", "POST"])
+def addfood():
+    if request.method == "GET":
+        return render_template("addfood.html")
+    elif request.method == "POST":
+        newfood = FoodItem()
+        newfood.src = request.form["source"]
+        newfood.title = request.form["title"]
+        newfood.description = request.form["description"]
+        newfood.save()
+        return render_template("addfood.html")
+
+
+@app.route('/deletefood', methods=["GET", "POST"])
+def deletefood():
+    if request.method == "GET":
+        return render_template("deletefood.html")
+    elif request.method == "POST":
+        newfood = FoodItem.objects(title=request.form["title"]).first()
+        if newfood is not None:
+            newfood.delete()
+        return render_template("deletefood.html")
+
+@app.route('/updatefood', methods=["GET", "POST"])
+def updatefood():
+    if request.method == "GET":
+        return render_template("updatefood.html")
+    elif request.method == "POST":
+        oldfood = FoodItem.objects(title=request.form["title"]).first()
+        if oldfood is not None:
+            oldfood.delete()
+        newfood = FoodItem()
+        newfood.src = request.form["source"]
+        newfood.title = request.form["new_title"]
+        newfood.description = request.form["description"]
+        newfood.save()
+        return render_template("updatefood.html")
 
 
 
